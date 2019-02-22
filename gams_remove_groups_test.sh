@@ -6,7 +6,7 @@ echo Enter the email address to administrate:
 
 read email
 
-echo Administrating $email
+echo Administrating $email...
 
 while :
 do
@@ -86,8 +86,6 @@ do
        gam create user $email firstname "$first_name" lastname "$last_name"
        echo "User $email created. Press the enter key to continue"
        read enterKey;;
-
-
   esac
 done
 
