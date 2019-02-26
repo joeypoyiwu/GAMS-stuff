@@ -115,15 +115,15 @@ fi
        echo "Group created. Press the enter key to continue"
        read enterKey;;
 
-    11)read -p "Enter the email address of the group you would like to delete: " $deletegroup
+    11)read -p "Enter the email address of the group you would like to delete: " deletegroup
        read -p "Are you sure you want to delete this group? Type 1 for Yes, 2 for No: " deletegroup_confirm
-       if [ $deletegroup_confirm -eq 1 ]; then
-         gam delete group $deletegroup
-         echo "Deleting group $deletegroup..."
-         echo "Group deleted. Press the enter key to continue"
-      else
-        echo "Cancelling command..."
-      fi
+        if [ $deletegroup_confirm -eq 1 ]; then
+          gam delete group $deletegroup
+          echo "Deleting group $deletegroup..."
+          echo "Group deleted. Press the enter key to continue"
+        else
+          echo "Cancelling command..."
+        fi
        read enterKey;;
 
     99)echo "Bye!"
