@@ -2,6 +2,10 @@
 
 gam() { "/Users/joey.wu/bin/gam/gam" "$@" ; }
 
+set -o errexit
+set -o nounset
+set -o pipefail
+
 while :
 do
   clear
