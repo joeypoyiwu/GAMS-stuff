@@ -10,6 +10,7 @@ while :
 do
   clear
   echo "What would you like to do?"
+  echo
   echo "1. Delete user from a group"
   echo "2. Delete user from all groups"
   echo "3. Add User to Group"
@@ -18,17 +19,20 @@ do
   echo "6. Check if Email Address is User, Group, or Alias"
   echo "7. Get User Information"
   echo "8. Delete a User"
-  echo "9. Create a User"
-  echo "10. Create a Google Group"
-  echo "11. Delete a Google Group"
+  echo "9. Rename a User"
+  echo "10. Create a User"
+  echo "11. Create a Google Group"
+  echo "12. Delete a Google Group"
+  echo "13. Exports current list of all suspended users in the current domain"
   echo "99. Exit"
+  echo
+  echo "Script will timeout in 30 seconds if no option is selected."
+  read -t 30 opt
 
-  read opt
-
-if [ $opt -lt 9 ]; then #You can change the value here to match your options. This is just a simple argument for me to keep track
-  read -p "Enter the email address to use: " email
+if [ $opt -lt 10 ]; then #You can change the value here to match your options. This is just a simple argument for me to keep track
+  read -p "Enter the email address you would like to make changes to: " email
   echo "Administering $email..."
-elif [ $opt -gt 8 ]; then
+elif [ $opt -gt 9 ]; then
   echo "Choosing $opt..."
 fi
   case $opt in
@@ -44,7 +48,7 @@ fi
         if [ $deleteallgroups_confirm -eq 1 ]; then
           gam user $email delete Groups
           echo "Completed. $email modified."
-          echo "User deleted from all groups. Press the enter key to continue"
+          echo "User $email deleted from all groups. Press the enter key to continue"
         else
           echo "Cancelling command..."
         fi
@@ -99,36 +103,52 @@ fi
           gam delete user $email
           echo "Deleting user $email..."
           echo "Completed. $email deleted."
-          echo "User deleted. Press the enter key to continue"
+          echo "User deleted. Press the enter key to continue..."
         else
           echo "Cancelling command..."
         fi
-      read enterKey;;
-
-    9)read -p "Enter the first name of the user: " first_name
-      read -p "Enter the last name of the user: " last_name
-      read -p "Enter the email address for the user: " create_email
-      echo "Creating user $first_name $last_name with the email address $create_email..."
-      gam create user $create_email firstname "$first_name" lastname "$last_name"
-      echo "User $create_email created. Press the enter key to continue"
-      read enterKey;;
-
-    10)read -p "Enter the email address of the new group you would like to create: " creategroup
-       echo "Creating group $creategroup..."
-       gam create group $creategroup
-       echo "Group created. Press the enter key to continue"
        read enterKey;;
 
-    11)read -p "Enter the email address of the group you would like to delete: " deletegroup
+    9)read -p "What would you like to rename the first name to? : " rename_firstname
+      read -p "What would you like to rename the last name to? : " rename_lastname
+      gam update user $email firstname $rename_firstname lastname $rename_lastname
+      echo "Completed. $email has been updated with first name $rename_firstname and last name $rename_lastname. Press enter to continue..."
+      read enterKey;;
+
+    10)read -p "Enter the first name of the user: " first_name
+       read -p "Enter the last name of the user: " last_name
+       read -p "Enter the email address for the user: " create_email
+       echo "Creating user $first_name $last_name with the email address $create_email..."
+       gam create user $create_email firstname "$first_name" lastname "$last_name"
+       echo "User $create_email created. Press the enter key to continue"
+       read enterKey;;
+
+    11)read -p "Enter the email address of the new group you would like to create: " creategroup
+       echo "Creating group $creategroup..."
+       gam create group $creategroup
+       echo "Group $creategroup created. Press the enter key to continue"
+       read enterKey;;
+
+    12)read -p "Enter the email address of the group you would like to delete: " deletegroup
        read -p "Are you sure you want to delete this group? Type 1 for Yes, 2 for No: " deletegroup_confirm
         if [ $deletegroup_confirm -eq 1 ]; then
           gam delete group $deletegroup
           echo "Deleting group $deletegroup..."
-          echo "Group deleted. Press the enter key to continue"
+          echo "Group $deletegroup deleted. Press the enter key to continue"
         else
           echo "Cancelling command..."
         fi
        read enterKey;;
+    # 13)read -p "Preparing to export current list of all suspended users. Are you sure? Type 1 for Yes, 2 for No: " export_suspended_confirm
+    #     if [ $export_suspended_confirm -eq 1 ]; then
+    #       read -p "Enter the last login time for the set of users you would like to pull.
+    #       PLEASE enter UTC time format in this format or it won't work. Example: 2013-01-01T00:00:00.000Z will pull in those not logged in since beginning of the year: " lastlogin
+    #       gam report users filter 'accounts:last_login_time<$lastlogin'
+    #       echo "Report exported as CSV."
+    #     else
+    #       echo "Cancelling command..."
+    #     fi
+    #    read enterKey;;
 
     99)echo "Bye!"
        echo "░░░░█▐▄▒▒▒▌▌▒▒▌░▌▒▐▐▐▒▒▐▒▒▌▒▀▄▀▄░
