@@ -23,7 +23,6 @@ do
   echo "10. Create a User"
   echo "11. Create a Google Group"
   echo "12. Delete a Google Group"
-  echo "13. Exports current list of all suspended users in the current domain"
   echo "99. Exit"
   echo
   echo "Script will timeout in 30 seconds if no option is selected."
@@ -54,14 +53,24 @@ fi
         fi
       read enterKey;;
 
-    3)read -p "Enter the group email address to add $email to: " addtogroup
-      read -p "Are you sure you want to add $email to $addtogroup? Type 1 for Yes, 2 for No: " addtogroup_confirm
-        if [ $addtogroup_confirm -eq 1 ]; then
-          gam update group $addtogroup add member $email
-          echo "Completed. $email has been added to $addtogroup. Press the enter key to continue"
-        else
-          echo "Cancelling command..."
-        fi
+    3)read -p "Are you adding the user to multiple groups? Type 1 for Yes, 2 for No: " multiplegroups
+      while [ $multiplegroups -eq 1 ] ;
+      do
+        read -p "Type 1 to continue adding to groups. Type 2 to cancel: " multiplegroups
+          if [ $multiplegroups -eq 1 ]; then
+            read -p "Enter the group email address to add $email to: " addtogroup
+            echo "Are you sure you want to add $email to $addtogroup?"
+            echo
+            read -p "Type 1 for Yes, 2 for No: " addtogroup_confirm
+            if [ $addtogroup_confirm -eq 1 ]; then
+              gam update group $addtogroup add member $email
+              echo "Task completed."
+            fi
+          fi
+      done
+      if [ $multiplegroups -eq 2 ]; then
+        echo "Got it. Cancelling command..."
+      fi
       read enterKey;;
 
     4)read -p "Enter the email address to transfer files TO: " driveemail
@@ -130,7 +139,7 @@ fi
        read enterKey;;
 
     12)read -p "Enter the email address of the group you would like to delete: " deletegroup
-       read -p "Are you sure you want to delete this group? Type 1 for Yes, 2 for No: " deletegroup_confirm
+       read -p "Are you sure you want to delete group $deletegroup? Type 1 for Yes, 2 for No: " deletegroup_confirm
         if [ $deletegroup_confirm -eq 1 ]; then
           gam delete group $deletegroup
           echo "Deleting group $deletegroup..."
@@ -139,7 +148,18 @@ fi
           echo "Cancelling command..."
         fi
        read enterKey;;
-    # 13)read -p "Preparing to export current list of all suspended users. Are you sure? Type 1 for Yes, 2 for No: " export_suspended_confirm
+    # 13)read -p "Enter the email address of the group you would like to update: " updategroup
+    #    read -p "Are you sure you want to edit the group $updategroup? Type 1 for Yes, 2 for No: " updategroup_confirm
+    #     if [ $updategroup_confirm -eq 1 ]; then
+    #       read -p "Enter the list of emails you would like to make changes to, separated by spaces. e.g.: test@moogsoft.com test2@moogsoft.com: " updategroup_members
+    #       gam update group $updategroup add member user $updategroup_members
+    #       echo "Updating group $updategroup..."
+    #       echo "Group $updategroup updated. Press the enter key to continue."
+    #     else
+    #       echo "Cancelling command..."
+    #     fi
+    #   read enterKey;;
+    # # 13)read -p "Preparing to export current list of all suspended users. Are you sure? Type 1 for Yes, 2 for No: " export_suspended_confirm
     #     if [ $export_suspended_confirm -eq 1 ]; then
     #       read -p "Enter the last login time for the set of users you would like to pull.
     #       PLEASE enter UTC time format in this format or it won't work. Example: 2013-01-01T00:00:00.000Z will pull in those not logged in since beginning of the year: " lastlogin
