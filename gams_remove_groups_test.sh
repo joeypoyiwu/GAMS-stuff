@@ -19,13 +19,13 @@ do
   echo "6. Check if Email Address is User, Group, or Alias"
   echo "7. Get User Information"
   echo "8. Delete a User"
-  echo "9. Rename a User"
+  echo "9. Update a User"
   echo "10. Create a User"
   echo "11. Create a Google Group"
   echo "12. Delete a Google Group"
   echo "99. Exit"
   echo
-  echo "Script will timeout in 30 seconds if no option is selected."
+  echo "***Script will timeout in 30 seconds if no option is selected.***"
   read -t 30 opt
 
 if [ $opt -lt 10 ]; then #You can change the value here to match your options. This is just a simple argument for me to keep track
@@ -118,11 +118,39 @@ fi
         fi
        read enterKey;;
 
-    9)read -p "What would you like to rename the first name to? : " rename_firstname
-      read -p "What would you like to rename the last name to? : " rename_lastname
-      gam update user $email firstname $rename_firstname lastname $rename_lastname
-      echo "Completed. $email has been updated with first name $rename_firstname and last name $rename_lastname. Press enter to continue..."
-      read enterKey;;
+    9)read -p "What would you like to update for user $email? Type either: [fullname, password, orgunit, suspend] " updateuser
+       if [ "$updateuser" = "fullname" ]; then
+         read -p "Enter the first name to change user $email to: " update_firstname
+         read -p "Enter the last name to change user $email to: " update_lastname
+         gam update user $email firstname $update_firstname lastname $update_lastname
+         echo "Done. $email has had their first name changed to $update_firstname and their last name changed to $update_lastname. Press the enter key to continue..."
+       elif [ "$updateuser" = "password" ]; then
+         read -p "Are you sure you want to change the password for $email? Type 1 for Yes, 2 for No: " update_password_confirm
+          if [ $update_password_confirm -eq 1 ]; then
+            read -p "Enter the new password to set for $email: " update_password
+            gam update user $email password $update_password
+            echo " $email password changed. Press the enter key to continue..."
+          fi
+       elif [ "$updateuser" = "orgunit" ]; then
+         echo "Are you sure you want to change the organizational unit for $email?"
+         read -p "Type 1 for Yes, 2 for No: " update_orgunit_confirm
+          if [ $update_orgunit_confirm -eq 1 ]; then
+            read -p "Enter the new organizational unit to set for $email: " update_orgunit
+            gam update user $email org "$update_orgunit"
+            echo " $email org unit changed to $update_orgunit. Press the enter key to continue..."
+          fi
+       elif [ "$updateuser" = "suspend" ]; then
+         echo "Do you want to suspend or unsuspend $email?"
+         read -p "Type 1 for Suspend, 2 for Unsuspend: " suspend_confirm
+          if [ $suspend_confirm -eq 1 ]; then
+            gam update user $email suspended on
+            echo "$email has been suspended. Press enter to continue..."
+          elif [ $suspendconfirm -eq 2 ]; then
+            gam update user $email suspended off
+            echo "$email has been unsuspended. Press enter to continue..."
+          fi
+        fi
+       read enterKey;;
 
     10)read -p "Enter the first name of the user: " first_name
        read -p "Enter the last name of the user: " last_name
@@ -148,27 +176,6 @@ fi
           echo "Cancelling command..."
         fi
        read enterKey;;
-    # 13)read -p "Enter the email address of the group you would like to update: " updategroup
-    #    read -p "Are you sure you want to edit the group $updategroup? Type 1 for Yes, 2 for No: " updategroup_confirm
-    #     if [ $updategroup_confirm -eq 1 ]; then
-    #       read -p "Enter the list of emails you would like to make changes to, separated by spaces. e.g.: test@moogsoft.com test2@moogsoft.com: " updategroup_members
-    #       gam update group $updategroup add member user $updategroup_members
-    #       echo "Updating group $updategroup..."
-    #       echo "Group $updategroup updated. Press the enter key to continue."
-    #     else
-    #       echo "Cancelling command..."
-    #     fi
-    #   read enterKey;;
-    # # 13)read -p "Preparing to export current list of all suspended users. Are you sure? Type 1 for Yes, 2 for No: " export_suspended_confirm
-    #     if [ $export_suspended_confirm -eq 1 ]; then
-    #       read -p "Enter the last login time for the set of users you would like to pull.
-    #       PLEASE enter UTC time format in this format or it won't work. Example: 2013-01-01T00:00:00.000Z will pull in those not logged in since beginning of the year: " lastlogin
-    #       gam report users filter 'accounts:last_login_time<$lastlogin'
-    #       echo "Report exported as CSV."
-    #     else
-    #       echo "Cancelling command..."
-    #     fi
-    #    read enterKey;;
 
     99)echo "Bye!"
        echo "░░░░█▐▄▒▒▒▌▌▒▒▌░▌▒▐▐▐▒▒▐▒▒▌▒▀▄▀▄░
