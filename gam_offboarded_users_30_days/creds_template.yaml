@@ -1,0 +1,5 @@
+#Due to all moogsoft.com emails having 2FV enforced, you will require an App password for the sender email to authenticate.
+user:
+  sender: #Enter sender email here
+  receiver: #Enter receiver email here
+  password: #Enter App Password for sender email here.
