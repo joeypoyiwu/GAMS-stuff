@@ -131,14 +131,17 @@ fi
       read enterKey;;
 
 
-    8)read -p "Are you sure you want to delete $email? Type 1 for Yes, 2 for No: " deleteuser_confirm
+    8)echo "Printing information on $email. Make sure this is the correct user."
+      gam info user $email
+      echo "Information for $email printed. Make sure this is the correct user."
+      read -p "Are you sure you want to delete $email? Type 1 for Yes, 2 for No: " deleteuser_confirm
         if [ $deleteuser_confirm -eq 1 ]; then
           gam delete user $email
           echo "Deleting user $email..."
           echo "Completed. $email deleted."
           echo "User deleted. Press the enter key to continue..."
         else
-          echo "Cancelling command..."
+          echo "Cancelling command. Press enter to continue..."
         fi
        read enterKey;;
 

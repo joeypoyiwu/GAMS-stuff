@@ -21,9 +21,10 @@ print(filename)
 
 def send_email():
 
-    subject = "CSV Export of Suspended Users within the last 30 days from today."
-    body = "See attached for list of suspended users from the last 30 days since " +str(today)
+    subject = "CSV Export of Offboarded Users within the last 30 days from today."
+    body = "See attached for list of offboarded users from the last 30 days since " +str(today)
 
+#Send email to defined receiver email var in creds.yaml
     msg = MIMEMultipart()
     msg["From"] = sender_email
     msg["To"] = receiver_email
@@ -48,4 +49,4 @@ def send_email():
 send_email()
 
 
-#See if it's possible to set script to look at last name of user to pull instead of 'suspended on' 
+#See if it's possible to set script to look at last name of user to pull instead of 'suspended on'
