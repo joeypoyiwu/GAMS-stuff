@@ -22,7 +22,7 @@ gsuite_offboard_prompt() {
   echo "*********************************"
   echo "Make sure this is the correct user."
   echo ""
-  read -p "Enter the full name of the user: "  offboardfullname
+  read -p "Enter the FULL NAME of the user: "  offboardfullname
   echo "Do you need to transfer any Google Drive files OR set an email forward?"
   read -p "Type "yes" or "no" exactly: " transfer_confirm
   if [ "$transfer_confirm" = "yes" ]; then
