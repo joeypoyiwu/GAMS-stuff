@@ -68,12 +68,25 @@ fi
             read -p "Type 1 for Yes, 2 for No: " addtogroup_confirm
             if [ $addtogroup_confirm -eq 1 ]; then
               gam update group $addtogroup add member $email
-              echo "Task completed."
+              echo "Task completed. Press the enter key to continue..."
+            fi
+            if [ $addtogroup_confirm -eq 2 ]; then
+              echo "Got it. Cancelling command. Press enter to continue..."
             fi
           fi
       done
       if [ $multiplegroups -eq 2 ]; then
-        echo "Got it. Cancelling command..."
+        read -p "Got it. Enter the grup email address to add $email to: " addtoonegroup
+        echo "Are you sure you want to add $email to $addtoonegroup?"
+        echo
+        read -p "Type 1 for Yes, 2 for No: " addtoonegroup_confirm
+        if [ $addtoonegroup_confirm -eq 1 ]; then
+          gam update group $addtoonegroup add member $email
+          echo "Task completed. Press the enter key to continue..."
+        fi
+        if [ $addtoonegroup_confirm -eq 2 ]; then
+          echo "Got it. Press the enter key to continue..."
+        fi
       fi
       read enterKey;;
 
