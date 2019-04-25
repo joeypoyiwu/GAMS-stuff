@@ -12,7 +12,7 @@ clear
 gsuite_offboard_prompt() {
   #Constant variables
   offboardlastname="DEPARTED"
-  domain="@moogsoft.com"
+  # domain="@moogsoft.com"
 
 
   read -p "Enter the email address of the user to be offboarded: " offboardemail
@@ -23,6 +23,9 @@ gsuite_offboard_prompt() {
   echo "Make sure this is the correct user."
   echo ""
   read -p "Enter the FULL NAME of the user: "  offboardfullname
+  echo ""
+  echo "First name will be set to: " "$offboardfullname"
+  echo ""
   echo "Do you need to transfer any Google Drive files OR set an email forward?"
   read -p "Type "yes" or "no" exactly: " transfer_confirm
   if [ "$transfer_confirm" = "yes" ]; then
@@ -54,7 +57,7 @@ gsuite_offboard_main() {
 
   #Change First Name to Full Name of User + Current Date
   offboard_date=$(date +"(%m/%d/%Y)")
-  offboard_end_date=$offboardfullname" $offboard_date"
+  offboard_end_date="$offboardfullname $offboard_date"
   echo "Changing first name of $offboardemail to reflect current date $offboard_date..."
   gam update user $offboardemail firstname "$offboard_end_date"
   echo ""
@@ -82,7 +85,6 @@ gsuite_offboard_main() {
 
 gsuite_forward_email() {
   #Set email forward to manager
-  forward_email+=$domain
   echo "Setting forwarding for $offboardemail..."
   gam user $offboardemail add forwardingaddress $forward_email
   gam user $offboardemail forward on $forward_email keep
