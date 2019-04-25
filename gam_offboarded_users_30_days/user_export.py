@@ -31,7 +31,7 @@ def send_email():
     msg['Subject'] = subject
     msg.attach(MIMEText(body, "plain"))
     filename = "suspended_users_" + str(today) + ".csv"
-    attachment = open("/Users/joey.wu/Documents/scripts/gam_delete_suspended_over_30/csv/suspended_users_" + str(today) +".csv", "rb")
+    attachment = open("/Users/joey.wu/Documents/GAM scripts/gam_offboarded_users_30_days/csv/suspended_users_" + str(today) +".csv", "rb")
     p = MIMEBase('application', 'octet-stream')
     p.set_payload((attachment).read())
     encoders.encode_base64(p)
