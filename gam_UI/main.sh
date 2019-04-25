@@ -60,33 +60,52 @@ fi
     3)read -p "Are you adding the user to multiple groups? Type 1 for Yes, 2 for No: " multiplegroups
       while [ $multiplegroups -eq 1 ] ;
       do
+        echo
         read -p "Type 1 to continue adding to groups. Type 2 to cancel: " multiplegroups
           if [ $multiplegroups -eq 1 ]; then
+            echo
             read -p "Enter the group email address to add $email to: " addtogroup
             echo "Are you sure you want to add $email to $addtogroup?"
             echo
-            read -p "Type 1 for Yes, 2 for No: " addtogroup_confirm
+            read -p "Type 1 for Yes, 3 for No: " addtogroup_confirm
+            echo
             if [ $addtogroup_confirm -eq 1 ]; then
               gam update group $addtogroup add member $email
+              echo
               echo "Task completed. Press the enter key to continue..."
             fi
-            if [ $addtogroup_confirm -eq 2 ]; then
+            if [ $addtogroup_confirm -eq 3 ]; then
+              echo
               echo "Got it. Cancelling command. Press enter to continue..."
             fi
           fi
       done
       if [ $multiplegroups -eq 2 ]; then
-        read -p "Got it. Enter the grup email address to add $email to: " addtoonegroup
-        echo "Are you sure you want to add $email to $addtoonegroup?"
         echo
-        read -p "Type 1 for Yes, 2 for No: " addtoonegroup_confirm
-        if [ $addtoonegroup_confirm -eq 1 ]; then
-          gam update group $addtoonegroup add member $email
-          echo "Task completed. Press the enter key to continue..."
-        fi
-        if [ $addtoonegroup_confirm -eq 2 ]; then
-          echo "Got it. Press the enter key to continue..."
-        fi
+        echo "Got it. Switching method to enter user to only ONE group."
+        echo
+        read -p "Would you still like to add $email to a group? Type yes or no exactly: " onegroup_confirm
+          if [ "$onegroup_confirm" = "yes" ]; then
+            echo
+            read -p "Enter the group email address to add $email to: " addtoonegroup
+            echo "Are you sure you want to add $email to $addtoonegroup?"
+            echo
+            read -p "Type 1 for Yes, 2 for No: " addtoonegroup_confirm
+            echo
+            if [ $addtoonegroup_confirm -eq 1 ]; then
+              gam update group $addtoonegroup add member $email
+              echo
+              echo "Task completed. Press the enter key to continue..."
+            fi
+            if [ $addtoonegroup_confirm -eq 2 ]; then
+            echo
+            echo "Got it. Press the enter key to continue..."
+            fi
+          fi
+          if [ "$onegroup_confirm" = "no" ]; then
+            echo
+            echo "Got it. Cancelling. Press the enter key to continue..."
+          fi
       fi
       read enterKey;;
 
@@ -123,11 +142,23 @@ fi
       echo "If you do not want a value for a field, just leave it empty and press Enter."
       read -p "Are you sure you want to edit the User information for $email? Type 1 for Yes, 2 for No: " update_confirm
         if [ $update_confirm -eq 1 ]; then
+          echo
+          echo "*** NOTE *** For organizational unit, please put in the full path of the org unit."
+          echo "For example: Employees and Contractors/Mobile Device Management/Cloud"
+          echo
+          read -p "Enter user's organizational unit here: " org_unit
+          echo
           read -p "Enter user's job title here: " job_title
+          echo
           read -p "Enter user's department here: " dept_name
+          echo
           read -p "Enter user's manager email here: " manager_name
-          read -p "Enter user's employment type here:: " desc_name
-          gam update user $email relation manager $manager_name organization title $job_title department $dept_name description $desc_name primary
+          echo
+          read -p "Enter user's employment type here: " desc_name
+          echo
+          # echo "For org unit, please type in the directory of the correct org unit. Example: /Mobile Device Management/Cloud"
+          gam update user $email relation manager $manager_name org "$org_unit" organization title "$job_title" department "$dept_name" description $desc_name primary
+          echo
           echo "Completed. Printing new user information..."
           echo "*********************************************"
           gam info user $email
