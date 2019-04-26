@@ -50,6 +50,11 @@ gsuite_offboard_main() {
   gam user $offboardemail delete Groups
   echo ""
 
+  #Remove all of user's calendar events
+  echo "Removing $offboardemail calendar events..."
+  gam calendar $offboardemail wipe
+  echo ""
+
   #Set User to be suspended
   echo "Setting user $offboardemail to be suspended..."
   gam update user $offboardemail suspended off
