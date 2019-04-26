@@ -95,6 +95,10 @@ gsuite_forward_email() {
   gam user $offboardemail forward on $forward_email keep
   echo "User $offboardemail's emails have been set to forward to $forward_email..."
   echo ""
+
+  echo "Printing forward emails set for $offboardemail..."
+  gam user $offboardemail show forwardingaddresses
+  echo ""
 }
 
 gsuite_offboard_gdrive() {
