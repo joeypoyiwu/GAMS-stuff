@@ -55,7 +55,7 @@ gsuite_offboard_main() {
   gam calendar $offboardemail wipe
   echo ""
 
-  #Set User to be suspended
+  #Set User to be un-suspended after JC account deletion. The purpose of this is to allow email forwarding for 30 days.
   echo "Setting user $offboardemail to be suspended..."
   gam update user $offboardemail suspended off
   echo ""
