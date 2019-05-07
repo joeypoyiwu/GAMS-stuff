@@ -51,9 +51,9 @@ gsuite_offboard_main() {
   echo ""
 
   #Remove all of user's calendar events
-  echo "Removing $offboardemail calendar events..."
-  gam calendar $offboardemail wipe
-  echo ""
+  # echo "Removing $offboardemail calendar events..."
+  # gam calendar $offboardemail wipe
+  # echo ""
 
   #Set User to be un-suspended after JC account deletion. The purpose of this is to allow email forwarding for 30 days.
   echo "Setting user $offboardemail to be suspended..."
@@ -62,14 +62,13 @@ gsuite_offboard_main() {
 
   #Change First Name to Full Name of User + Current Date
   offboard_date=$(date +"(%m/%d/%Y)")
-  offboard_end_date="$offboardfullname $offboard_date"
+  offboard_end_date="$offboardfullname - $offboard_date"
   echo "Changing first name of $offboardemail to reflect current date $offboard_date..."
-  gam update user $offboardemail firstname "$offboard_end_date"
   echo ""
 
   #Change Last Name of user to say "DEPARTED". This is mainly for automation for CSV export.
   echo "Changing last name of $offboardemail to 'DEPARTED'..."
-  gam update user $offboardemail lastname $offboardlastname
+  gam update user $offboardemail firstname "$offboard_end_date" lastname $offboardlastname
   echo "User $offboardemail's last name has been changed to $offboardlastname..."
   echo "User first name is now $offboard_end_date".
   echo ""
