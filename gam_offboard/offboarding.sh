@@ -67,9 +67,9 @@ gsuite_offboard_main() {
   echo ""
 
   #Change Last Name of user to say "DEPARTED". This is mainly for automation for CSV export.
-  echo "Changing last name of $offboardemail to 'DEPARTED'..."
-  gam update user $offboardemail firstname "$offboard_end_date" lastname $offboardlastname
-  echo "User $offboardemail's last name has been changed to $offboardlastname..."
+  echo "Changing last name of $offboardemail to 'DEPARTED' and scrambling password..."
+  gam update user $offboardemail firstname "$offboard_end_date" lastname $offboardlastname password '^jt=X3^sCp2jUnU)>4+$'
+  echo "User $offboardemail's last name has been changed to $offboardlastname. Password has been scrambled..."
   echo "User first name is now $offboard_end_date".
   echo ""
 
